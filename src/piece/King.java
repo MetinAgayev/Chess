@@ -3,13 +3,13 @@ package piece;
 import main.GamePanel;
 
 public class King extends Piece{
-    public King(int col, int row, int color) {
+    public King(int color, int col, int row) {
         super(col, row, color);
         if(color== GamePanel.WHITE){
-            image=getImage("/piece/chess_piece_2_white_king/");
+            image=getImage("/piece/chess_piece_2_white_king");
         }
         else{
-            image=getImage("/piece/chess_piece_2_black_king/");
+            image=getImage("/piece/chess_piece_2_black_king");
         }
     }
 }
