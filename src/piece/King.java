@@ -6,10 +6,10 @@ public class King extends Piece{
     public King(int color, int col, int row) {
         super(col, row, color);
         if(color== GamePanel.WHITE){
-            image=getImage("/piece/chess_piece_2_white_king");
+            image=getImage("/piece/w-king");
         }
         else{
-            image=getImage("/piece/chess_piece_2_black_king");
+            image=getImage("/piece/b-king");
         }
     }
 }
