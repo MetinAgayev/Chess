@@ -53,6 +53,16 @@ public class Piece {
         preCol=getCol(x);
         preRow=getRow(y);
     }
+    public void resetPosition(){
+        col=preCol;
+        row=preRow;
+        x=getX(row);
+        y=getY(col);
+
+    }
+    public boolean canMove(int targetCol ,int targetRow){
+        return false;
+    }
     public void draw(Graphics2D graphics2D){
         graphics2D.drawImage(image,x,y,Board.SQUARE_SIZE,Board.SQUARE_SIZE,null)    ;
     }

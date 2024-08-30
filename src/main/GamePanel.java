@@ -16,6 +16,8 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int WHITE = 0;
     public static final int BLACK = 1;
     int currentColor = WHITE;
+    boolean canMove;
+    boolean validSquare;
     public static ArrayList<Piece> pieces = new ArrayList();
     public static ArrayList<Piece> simPieces = new ArrayList();
     Piece activeP;
@@ -52,7 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
         pieces.add(new Bishop(WHITE, 2, 7));
         pieces.add(new Bishop(WHITE, 5, 7));
         pieces.add(new Queen(WHITE, 3, 7));
-        pieces.add(new King(WHITE, 4, 7));
+        pieces.add(new King(WHITE, 4, 4));
 
         //Black pieces
         pieces.add(new Pawn(BLACK, 0, 1));
@@ -95,19 +97,31 @@ public class GamePanel extends JPanel implements Runnable {
                 simulate();
             }
         }
-        if (mouse.pressed==false) {
+        if (mouse.pressed == false) {
             if (activeP != null) {
-                activeP.updatePosition();
+                if (validSquare) {
+                    activeP.updatePosition();
+                } else {
+                    activeP.resetPosition();
+                    activeP = null;
+                }
                 activeP = null;
             }
         }
     }
 
     public void simulate() {
+        canMove = false;
+        validSquare = false;
         activeP.x = mouse.x - Board.SQUARE_SIZE;
         activeP.y = mouse.y - Board.SQUARE_SIZE;
         activeP.col = activeP.getCol(activeP.x);
         activeP.row = activeP.getRow(activeP.y);
+
+        if (activeP.canMove(activeP.col, activeP.row)) {
+            canMove = true;
+            validSquare = true;
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -117,12 +131,15 @@ public class GamePanel extends JPanel implements Runnable {
         for (Piece piece : simPieces) {
             piece.draw(graphics2D);
         }
+
         if (activeP != null) {
-            graphics2D.setColor(Color.white);
-            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-            graphics2D.fillRect(activeP.col * Board.SQUARE_SIZE, activeP.row * Board.SQUARE_SIZE, Board.SQUARE_SIZE,
-                    Board.SQUARE_SIZE);
-            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            if (canMove) {
+                graphics2D.setColor(Color.white);
+                graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+                graphics2D.fillRect(activeP.col * Board.SQUARE_SIZE, activeP.row * Board.SQUARE_SIZE, Board.SQUARE_SIZE,
+                        Board.SQUARE_SIZE);
+                graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            }
             activeP.draw(graphics2D);
         }
     }
